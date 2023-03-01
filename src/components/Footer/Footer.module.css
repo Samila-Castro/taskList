@@ -1,0 +1,21 @@
+footer {
+  padding: 1.5rem 5rem;
+  background: var(--white);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+}
+
+.linkList {
+  list-style-type: none;
+  display: flex;
+}
+.linkList li {
+  font-weight: 700;
+}
+
+p {
+  font-weight: 400;
+}
