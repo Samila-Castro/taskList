@@ -6,7 +6,8 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../stores";
 
 interface FormProps {
   openPop: boolean;
@@ -16,16 +17,19 @@ interface FormProps {
 const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
   const [taskInput, setTaskInput] = React.useState("");
   const dispatch = useDispatch();
+  const selectedProjectId = useSelector(
+    (state: RootState) => state.projects.selectedProjectId
+  );
 
   const handleInputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskInput(event.currentTarget.value);
   };
-  const handleCreateNewTask = (id: string) => {
+  const handleCreateNewTask = () => {
     console.log({ taskInput });
     dispatch({
       type: "projects/createNewTask",
       payload: {
-        id,
+        id: selectedProjectId,
         taskInput,
       },
     });
