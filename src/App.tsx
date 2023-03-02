@@ -51,11 +51,13 @@ interface PropsProject {
 
 function App() {
   const startDate = new Date("2023-03-01").toDateString();
-  const projects = useSelector((state: RootState) => state.projects);
+  const projects = useSelector((state: RootState) => state.projects.projects);
+  const selectedProjectId = useSelector(
+    (state: RootState) => state.projects.selectedProjectId
+  );
+
   const projectInboxId = projects[0].id;
   const [selectedProject, setSelectedProject] = React.useState<PropsProject>();
-  const [selectedProjectId, setSelectedProjectId] =
-    React.useState<string>(projectInboxId);
   const [input, setInput] = React.useState("");
   const [taskInput, setTaskInput] = React.useState("");
   const [requireNewProject, setRequireNewProject] = React.useState(false);
@@ -76,7 +78,10 @@ function App() {
   }, [selectedProjectId, projects]);
 
   const handleProjectClicked = (id: string) => {
-    setSelectedProjectId(id);
+    dispatch({
+      type: "projects/setSelectedProjectId",
+      payload: id,
+    });
   };
 
   const handleButtonClickCreateNewProject = () => {
@@ -109,12 +114,12 @@ function App() {
   const handleInputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTaskInput(event.currentTarget.value);
   };
-  const handleCreateNewTask = (id: string) => {
+  const handleCreateNewTask = () => {
     console.log({ taskInput });
     dispatch({
       type: "projects/createNewTask",
       payload: {
-        id,
+        id: selectedProjectId,
         taskInput,
       },
     });
@@ -309,23 +314,3 @@ function App() {
 }
 
 export default App;
-/*<TextField
-                      sx={{
-                        width: "25ch",
-                      }}
-                      label="Adicionar nova task"
-                      id="fullWidth"
-                      value={taskInput}
-                      onChange={handleInputTask}
-                      size="small"
-                    />
-                    <Button
-                      variant="contained"
-                      color="success"
-                      size="small"
-                      onClick={() => handleCreateNewTask(selectedProject.id)}
-                    >
-                      <CheckBoxOutlinedIcon fontSize="small" />
-                    </Button>
-
-                    */
