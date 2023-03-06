@@ -7,6 +7,8 @@ import MoreHorizIcon from "@material-ui/icons/MoreVert";
 import { pink } from "@mui/material/colors";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import {
   Box,
@@ -25,6 +27,7 @@ import {
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
 
 interface TaskProps {
+  id: string;
   title: string;
   description?: string;
   completed?: boolean;
@@ -35,16 +38,9 @@ interface TaskProps {
   tags?: string[];
 }
 
-const Task: React.FC<TaskProps> = ({ title, startDate }) => {
+const Task: React.FC<TaskProps> = ({ id, title, description, startDate }) => {
   const [dialogOpen, setdialogOpen] = React.useState(false);
-
-  //const handleClickOpen = () => {
-  //setOpen(true);
-  //};
-
-  //const handleClose = () => {
-  //setOpen(false);
-  // };
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -61,6 +57,15 @@ const Task: React.FC<TaskProps> = ({ title, startDate }) => {
     setOpenOption(true);
   };
 
+  const handleDeleteTask = () => {
+    dispatch({
+      type: "projects/deleteTask",
+      payload: {
+        id,
+      },
+    });
+  };
+
   const handleCloseDialog = () => {
     setdialogOpen(false);
   };
@@ -70,7 +75,7 @@ const Task: React.FC<TaskProps> = ({ title, startDate }) => {
   };
   return (
     <>
-      <Card sx={{ width: "13rem", borderRadius: "5%" }}>
+      <Card sx={{ maxWidth: "15rem", borderRadius: "5%" }}>
         <Box
           sx={{
             display: "flex",
@@ -103,11 +108,11 @@ const Task: React.FC<TaskProps> = ({ title, startDate }) => {
             }}
           >
             <MenuItem onClick={handleClose2}>Editar</MenuItem>
-            <MenuItem onClick={handleClose2}>Deletar</MenuItem>
-            <MenuItem onClick={handleClose2}>Logout</MenuItem>
+            <MenuItem onClick={handleDeleteTask}>Deletar</MenuItem>
           </Menu>
         </Box>
         <CardContent>
+          <Typography>{description}</Typography>
           <Divider light />
         </CardContent>
         <CardActions
