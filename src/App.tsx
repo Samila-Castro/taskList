@@ -39,7 +39,7 @@ interface TaskProps {
   title: string;
   description?: string;
   //completed?: boolean;
-  startDate?: Date;
+  startDate?: string;
   //dueDate?: Date;
   priority?: "Baixa" | "Normal" | "Alta";
   //state?: "Novo" | "Em Andamento" | "Pronto";
@@ -66,11 +66,14 @@ function App() {
   });
   const [taskInput, setTaskInput] = React.useState("");
   const [requireNewProject, setRequireNewProject] = React.useState(false);
-  const [clickedProject, setClickedProject] = React.useState(false);
   const [form, setForm] = React.useState(false);
-  const [editForm, setEditForm] = React.useState(false);
+  const [taskInputEdit, setTaskInputEdit] = React.useState<TaskProps>();
 
   const dispatch = useDispatch();
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInput({ id: input.id, name: event.currentTarget.value });
+  };
 
   React.useEffect(() => {
     const project = projects.find(
@@ -107,6 +110,15 @@ function App() {
     setRequireNewProject(false);
   };
 
+  const handleDeleteTask = (id: string) => {
+    dispatch({
+      type: "projects/deleteTask",
+      payload: {
+        id,
+      },
+    });
+  };
+
   const handleCreatNewProjectCancell = () => {
     setRequireNewProject(false);
   };
@@ -118,11 +130,6 @@ function App() {
         id,
       },
     });
-  };
-
-  const handleEditProject = (projectId: string, projectName: string) => {
-    setInput({ id: projectId, name: projectName });
-    setRequireNewProject(true);
   };
 
   const handleInputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,6 +148,26 @@ function App() {
     ///handleProjectClicked(id);
     console.log({ selectedProject });
     //setSelectedProject(projects.find((project) => project.id === id));
+  };
+
+  const handleEditTask = (task: TaskProps) => {
+    setTaskInputEdit(task);
+    setForm(true);
+  };
+
+  const handleIniteCreateTask = () => {
+    setTaskInputEdit({
+      id: "",
+      title: "",
+      description: "",
+      startDate: "",
+    });
+    setForm(true);
+  };
+
+  const handleEditProject = (projectId: string, projectName: string) => {
+    setInput({ id: projectId, name: projectName });
+    setRequireNewProject(true);
   };
 
   const handleOpenPopUp = () => {
@@ -300,7 +327,7 @@ function App() {
                     <Button
                       variant="contained"
                       startIcon={<AddIcon />}
-                      onClick={handleOpenPopUp}
+                      onClick={handleIniteCreateTask}
                       sx={{ background: "#18a0fb", textTransform: "none" }}
                     >
                       New task
@@ -308,6 +335,7 @@ function App() {
                     <FormTeste
                       openPop={form}
                       handleOnClosePopUp={handleOnClosePopUp}
+                      task={taskInputEdit}
                     />
                   </Box>
                 </Box>
@@ -319,6 +347,7 @@ function App() {
                         description={task.description}
                         priority={task.priority}
                         id={task.id}
+                        taskEdit={() => handleEditTask(task)}
                       />
                     );
                   })}
