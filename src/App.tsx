@@ -39,7 +39,7 @@ interface TaskProps {
   title: string;
   description?: string;
   //completed?: boolean;
-  startDate?: string;
+  startDate: string;
   //dueDate?: Date;
   priority?: "Baixa" | "Normal" | "Alta";
   //state?: "Novo" | "Em Andamento" | "Pronto";
@@ -346,6 +346,7 @@ function App() {
                         priority={task.priority}
                         id={task.id}
                         taskEdit={() => handleEditTask(task)}
+                        startDate={task.startDate}
                       />
                     );
                   })}
