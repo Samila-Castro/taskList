@@ -61,15 +61,14 @@ export const projectSlicer = createSlice({
         (project) => project.id === action.payload.id
       );
       const currectProject = copyProjects[projecteSelectedIndex];
-      const newTaskArray = [
-        ...currectProject.tasks,
-        {
-          id: uuidv4(),
-          startDate: new Date("2023-02-12").toDateString(),
-          ...action.payload.taskInput,
-        },
-      ];
+      const newTask = {
+        ...action.payload.taskInput,
+        id: uuidv4(),
+        startDate: new Date().toDateString(),
+      };
+      const newTaskArray = [...currectProject.tasks, newTask];
       copyProjects[projecteSelectedIndex].tasks = newTaskArray;
+      console.log(newTask);
     },
 
     editTask: (state, action) => {
