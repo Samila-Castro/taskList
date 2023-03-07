@@ -38,6 +38,14 @@ export const projectSlicer = createSlice({
         tasks: [],
       });
     },
+    editProject: (state, action) => {
+      const copyProjects = [...state.projects];
+      const projecteSelectedIndex = state.projects.findIndex(
+        (project) => project.id === action.payload.id
+      );
+
+      state.projects[projecteSelectedIndex].name = action.payload.name;
+    },
 
     deleteProject: (state, action) => {
       const copyProjects = [...state.projects];
@@ -63,6 +71,15 @@ export const projectSlicer = createSlice({
       ];
       copyProjects[projecteSelectedIndex].tasks = newTaskArray;
     },
+
+    editTask: (state, action) => {
+      const copyProjects = [...state.projects];
+      const projecteSelectedIndex = state.projects.findIndex(
+        (project) => project.id === action.payload.id
+      );
+
+      state.projects[projecteSelectedIndex].name = action.payload.name;
+    },
     deleteTask: (state, action) => {
       console.log({ action });
       const projecteSelectedIndex = state.projects.findIndex(
@@ -74,10 +91,14 @@ export const projectSlicer = createSlice({
         (task) => task.id !== action.payload.id
       );
     },
-    editProject: (state, action) => {},
   },
 });
 
-export const { createNewProject, deleteProject, deleteTask } =
-  projectSlicer.actions;
+export const {
+  createNewProject,
+  deleteProject,
+  editProject,
+  deleteTask,
+  editTask,
+} = projectSlicer.actions;
 export default projectSlicer.reducer;
