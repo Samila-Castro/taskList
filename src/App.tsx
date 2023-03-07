@@ -136,7 +136,6 @@ function App() {
     setTaskInput(event.currentTarget.value);
   };
   const handleCreateNewTask = () => {
-    console.log({ taskInput });
     dispatch({
       type: "projects/createNewTask",
       payload: {
@@ -146,7 +145,6 @@ function App() {
     });
     setTaskInput("");
     ///handleProjectClicked(id);
-    console.log({ selectedProject });
     //setSelectedProject(projects.find((project) => project.id === id));
   };
 
