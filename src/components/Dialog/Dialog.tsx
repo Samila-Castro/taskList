@@ -12,17 +12,42 @@ import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
 import { IconButton } from "@mui/material";
 
+interface TaskProps {
+  id?: string;
+  title: string;
+  description?: string;
+  startDate?: string;
+  priority?: "Baixa" | "Normal" | "Alta";
+}
 interface FormProps {
   openPop: boolean;
   handleOnClosePopUp: () => void;
+  task?: TaskProps;
 }
 
-const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
-  const [taskInput, setTaskInput] = React.useState({
+const FormTeste: React.FC<FormProps> = ({
+  openPop,
+  handleOnClosePopUp,
+  task,
+}) => {
+  const [taskInput, setTaskInput] = React.useState<TaskProps>({
     title: "",
     description: "",
     startDate: "",
   });
+
+  React.useEffect(() => {
+    console.log(task);
+    if (task) setTaskInput(task);
+    else {
+      setTaskInput({
+        title: "",
+        description: "",
+        startDate: "",
+      });
+    }
+  }, [task]);
+
   const dispatch = useDispatch();
   const selectedProjectId = useSelector(
     (state: RootState) => state.projects.selectedProjectId
@@ -33,17 +58,21 @@ const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
       ...taskInput,
       [key]: value,
     });
-    console.log(taskInput);
   };
   const handleCreateNewTask = () => {
-    console.log({ taskInput });
-    dispatch({
-      type: "projects/createNewTask",
-      payload: {
-        id: selectedProjectId,
-        taskInput,
-      },
-    });
+    if (taskInput.id) {
+      dispatch({
+        type: "projects/editTask",
+        payload: taskInput,
+      });
+    } else
+      dispatch({
+        type: "projects/createNewTask",
+        payload: {
+          id: selectedProjectId,
+          taskInput,
+        },
+      });
     handleOnClosePopUp();
   };
 
@@ -61,6 +90,7 @@ const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
             id="name"
             label="Título da task"
             type="email"
+            value={taskInput.title}
             fullWidth
             variant="standard"
             onChange={(event) =>
@@ -68,6 +98,7 @@ const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
             }
           />
           <TextField
+            value={taskInput.description}
             autoFocus
             margin="dense"
             id="name"
