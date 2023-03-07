@@ -18,7 +18,8 @@ import PlaylistAddIcon from "@material-ui/icons/PlaylistAdd";
 import CloseIcon from "@material-ui/icons/Close";
 import AddIcon from "@material-ui/icons/Add";
 import ListIcon from "@material-ui/icons/List";
-import CheckBoxOutlinedIcon from "@material-ui/icons/CheckBoxOutlined";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import { Button, IconButton, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -34,10 +35,11 @@ import Form from "./components/Dialog/Dialog";
 import FormTeste from "./components/Dialog/Dialog";
 
 interface TaskProps {
+  id: string;
   title: string;
-  //description?: string;
+  description?: string;
   //completed?: boolean;
-  //startDate?: Date;
+  startDate?: Date;
   //dueDate?: Date;
   priority?: "Baixa" | "Normal" | "Alta";
   //state?: "Novo" | "Em Andamento" | "Pronto";
@@ -50,7 +52,7 @@ interface PropsProject {
 }
 
 function App() {
-  const startDate = new Date("2023-03-01").toDateString();
+  //const startDate = new Date("2023-03-01").toDateString();
   const projects = useSelector((state: RootState) => state.projects.projects);
   const selectedProjectId = useSelector(
     (state: RootState) => state.projects.selectedProjectId
@@ -58,17 +60,17 @@ function App() {
 
   const projectInboxId = projects[0].id;
   const [selectedProject, setSelectedProject] = React.useState<PropsProject>();
-  const [input, setInput] = React.useState("");
+  const [input, setInput] = React.useState({
+    id: "",
+    name: "",
+  });
   const [taskInput, setTaskInput] = React.useState("");
   const [requireNewProject, setRequireNewProject] = React.useState(false);
   const [clickedProject, setClickedProject] = React.useState(false);
   const [form, setForm] = React.useState(false);
+  const [editForm, setEditForm] = React.useState(false);
 
   const dispatch = useDispatch();
-
-  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(event.currentTarget.value);
-  };
 
   React.useEffect(() => {
     const project = projects.find(
@@ -89,12 +91,19 @@ function App() {
   };
 
   const handleCreateNewProject = () => {
-    dispatch({
-      type: "projects/createNewProject",
-      payload: input,
-    });
+    if (input.id) {
+      dispatch({
+        type: "projects/editProject",
+        payload: input,
+      });
+    } else {
+      dispatch({
+        type: "projects/createNewProject",
+        payload: input.name,
+      });
+    }
 
-    setInput("");
+    setInput({ id: "", name: "" });
     setRequireNewProject(false);
   };
 
@@ -109,6 +118,11 @@ function App() {
         id,
       },
     });
+  };
+
+  const handleEditProject = (projectId: string, projectName: string) => {
+    setInput({ id: projectId, name: projectName });
+    setRequireNewProject(true);
   };
 
   const handleInputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,7 +146,6 @@ function App() {
   const handleOpenPopUp = () => {
     setForm(true);
   };
-
   const handleOnClosePopUp = () => {
     setForm(false);
   };
@@ -211,6 +224,22 @@ function App() {
                             <ListIcon color="action" fontSize="small" />
                           </ListItemIcon>
                           <ListItemText primary={project.name} />
+                          <IconButton
+                            aria-label="delete"
+                            size="small"
+                            onClick={() => handleDeleteProject(project.id)}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                          <IconButton
+                            aria-label="edit"
+                            size="small"
+                            onClick={() =>
+                              handleEditProject(project.id, project.name)
+                            }
+                          >
+                            <EditIcon fontSize="small" />
+                          </IconButton>
                         </ListItemButton>
                       </ListItem>
                     )
@@ -223,7 +252,7 @@ function App() {
                 <TextField
                   label="Project name"
                   id="fullWidth"
-                  value={input}
+                  value={input.name}
                   onChange={handleInput}
                   size="small"
                   required
@@ -268,23 +297,13 @@ function App() {
                 <Box className={styles.mainWrapper}>
                   <Typography variant="h4">{selectedProject.name}</Typography>
                   <Box sx={{ display: "flex", gap: "6px" }}>
-                    <TextField
-                      sx={{
-                        width: "20ch",
-                      }}
-                      label="Adicionar nova task"
-                      id="fullWidth"
-                      value={taskInput}
-                      onChange={handleInputTask}
-                      size="small"
-                    />
                     <Button
                       variant="contained"
-                      color="success"
-                      size="small"
+                      startIcon={<AddIcon />}
                       onClick={handleOpenPopUp}
+                      sx={{ background: "#18a0fb", textTransform: "none" }}
                     >
-                      <CheckBoxOutlinedIcon fontSize="small" />
+                      New task
                     </Button>
                     <FormTeste
                       openPop={form}
@@ -297,8 +316,9 @@ function App() {
                     return (
                       <Task
                         title={task.title}
+                        description={task.description}
                         priority={task.priority}
-                        startDate={startDate}
+                        id={task.id}
                       />
                     );
                   })}
