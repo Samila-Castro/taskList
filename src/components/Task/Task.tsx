@@ -7,15 +7,12 @@ import MoreHorizIcon from "@material-ui/icons/MoreVert";
 import { pink } from "@mui/material/colors";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 import {
   Box,
-  Button,
   CardContent,
   Dialog,
-  DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
