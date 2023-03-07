@@ -37,7 +37,6 @@ const FormTeste: React.FC<FormProps> = ({
   });
 
   React.useEffect(() => {
-    console.log(task);
     if (task) setTaskInput(task);
     else {
       setTaskInput({
