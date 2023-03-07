@@ -31,7 +31,7 @@ interface TaskProps {
   title: string;
   description?: string;
   completed?: boolean;
-  startDate?: string;
+  startDate: string;
   dueDate?: Date;
   priority?: "Baixa" | "Normal" | "Alta";
   state?: "Novo" | "Em Andamento" | "Pronto";
@@ -39,7 +39,13 @@ interface TaskProps {
   taskEdit: () => void;
 }
 
-const Task: React.FC<TaskProps> = ({ id, title, description, taskEdit }) => {
+const Task: React.FC<TaskProps> = ({
+  id,
+  title,
+  description,
+  startDate,
+  taskEdit,
+}) => {
   const [dialogOpen, setdialogOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -113,7 +119,7 @@ const Task: React.FC<TaskProps> = ({ id, title, description, taskEdit }) => {
           </Menu>
         </Box>
         <CardContent>
-          <Typography>{description}</Typography>
+          <Typography>{startDate}</Typography>
         </CardContent>
         <CardActions
           sx={{
