@@ -36,9 +36,10 @@ interface TaskProps {
   priority?: "Baixa" | "Normal" | "Alta";
   state?: "Novo" | "Em Andamento" | "Pronto";
   tags?: string[];
+  taskEdit: () => void;
 }
 
-const Task: React.FC<TaskProps> = ({ id, title, description, startDate }) => {
+const Task: React.FC<TaskProps> = ({ id, title, description, taskEdit }) => {
   const [dialogOpen, setdialogOpen] = React.useState(false);
   const dispatch = useDispatch();
 
@@ -107,7 +108,7 @@ const Task: React.FC<TaskProps> = ({ id, title, description, startDate }) => {
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={handleClose2}>Editar</MenuItem>
+            <MenuItem onClick={() => taskEdit()}>Editar</MenuItem>
             <MenuItem onClick={handleDeleteTask}>Deletar</MenuItem>
           </Menu>
         </Box>
