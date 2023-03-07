@@ -31,7 +31,7 @@ interface TaskProps {
   title: string;
   description?: string;
   completed?: boolean;
-  startDate: string;
+  startDate?: string;
   dueDate?: Date;
   priority?: "Baixa" | "Normal" | "Alta";
   state?: "Novo" | "Em Andamento" | "Pronto";
@@ -93,7 +93,7 @@ const Task: React.FC<TaskProps> = ({ id, title, description, startDate }) => {
               fontWeight: 600,
             }}
           >
-            {title}
+            {title} 🚧
           </Typography>
           <IconButton aria-label="settings" onClick={handleClick}>
             <MoreHorizIcon />
@@ -113,7 +113,6 @@ const Task: React.FC<TaskProps> = ({ id, title, description, startDate }) => {
         </Box>
         <CardContent>
           <Typography>{description}</Typography>
-          <Divider light />
         </CardContent>
         <CardActions
           sx={{
@@ -146,9 +145,7 @@ const Task: React.FC<TaskProps> = ({ id, title, description, startDate }) => {
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>
               <DialogContentText id="alert-dialog-description">
-                Let Google help apps determine location. This means sending
-                anonymous location data to Google, even when no apps are
-                running.
+                {description}
               </DialogContentText>
             </DialogContent>
           </Dialog>
