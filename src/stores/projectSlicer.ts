@@ -75,10 +75,14 @@ export const projectSlicer = createSlice({
     editTask: (state, action) => {
       const copyProjects = [...state.projects];
       const projecteSelectedIndex = state.projects.findIndex(
-        (project) => project.id === action.payload.id
+        (project) => project.id === state.selectedProjectId
       );
 
-      state.projects[projecteSelectedIndex].name = action.payload.name;
+      const taskSelectedIndex = state.projects[
+        projecteSelectedIndex
+      ].tasks.findIndex((task) => task.id === action.payload.id);
+      state.projects[projecteSelectedIndex].tasks[taskSelectedIndex] =
+        action.payload;
     },
     deleteTask: (state, action) => {
       console.log({ action });
