@@ -8,6 +8,9 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../stores";
+import EmojiPicker from "emoji-picker-react";
+import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
+import { IconButton } from "@mui/material";
 
 interface FormProps {
   openPop: boolean;
@@ -15,14 +18,22 @@ interface FormProps {
 }
 
 const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
-  const [taskInput, setTaskInput] = React.useState("");
+  const [taskInput, setTaskInput] = React.useState({
+    title: "",
+    description: "",
+    startDate: "",
+  });
   const dispatch = useDispatch();
   const selectedProjectId = useSelector(
     (state: RootState) => state.projects.selectedProjectId
   );
 
-  const handleInputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskInput(event.currentTarget.value);
+  const handleInputTask = (value: string, key: string) => {
+    setTaskInput({
+      ...taskInput,
+      [key]: value,
+    });
+    console.log(taskInput);
   };
   const handleCreateNewTask = () => {
     console.log({ taskInput });
@@ -33,28 +44,40 @@ const FormTeste: React.FC<FormProps> = ({ openPop, handleOnClosePopUp }) => {
         taskInput,
       },
     });
-    setTaskInput("");
-    ///handleProjectClicked(id);
-    //console.log({ selectedProject });
-    //setSelectedProject(projects.find((project) => project.id === id));
+    handleOnClosePopUp();
   };
+
   return (
     <div>
       <Dialog open={openPop} onClose={handleOnClosePopUp}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>❤️‍🔥 🚧 </DialogTitle>
         <DialogContent>
           <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
+            To create a task, please enter fill in all the fields below.
           </DialogContentText>
           <TextField
             autoFocus
             margin="dense"
             id="name"
-            label="Email Address"
+            label="Título da task"
             type="email"
             fullWidth
             variant="standard"
+            onChange={(event) =>
+              handleInputTask(event.currentTarget.value, "title")
+            }
+          />
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="Descrição da task"
+            type="email"
+            fullWidth
+            variant="standard"
+            onChange={(event) =>
+              handleInputTask(event.currentTarget.value, "description")
+            }
           />
         </DialogContent>
         <DialogActions>
