@@ -35,6 +35,15 @@
   }
 }
 
+@media only screen and (width: 768px) {
+  .gridBox {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .mainWrapper {
+    flex-direction: column;
+  }
+}
+
 @media only screen and (width: 992px) {
   .gridBox {
     grid-template-columns: repeat(3, 1fr);
