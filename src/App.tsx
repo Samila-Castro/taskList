@@ -29,6 +29,7 @@ import { Footer } from "./components/Footer/Footer";
 import Dialog from "./components/Dialog/Dialog";
 import Form from "./components/Dialog/Dialog";
 import FormTeste from "./components/Dialog/Dialog";
+import dayjs from "dayjs";
 
 interface TaskProps {
   id: string;
@@ -47,6 +48,12 @@ interface PropsProject {
   tasks: TaskProps[];
 }
 
+interface Content {
+  title: string;
+  tasks: TaskProps[];
+  createIsAllowed?: boolean;
+}
+
 function App() {
   //const startDate = new Date("2023-03-01").toDateString();
   const projects = useSelector((state: RootState) => state.projects.projects);
@@ -55,7 +62,7 @@ function App() {
   );
 
   const projectInboxId = projects[0].id;
-  const [selectedProject, setSelectedProject] = React.useState<PropsProject>();
+  const [content, setContent] = React.useState<Content | null>(null);
   const [input, setInput] = React.useState({
     id: "",
     name: "",
@@ -64,7 +71,7 @@ function App() {
   const [requireNewProject, setRequireNewProject] = React.useState(false);
   const [form, setForm] = React.useState(false);
   const [taskInputEdit, setTaskInputEdit] = React.useState<TaskProps>();
-
+  const [isEdit, setIsEdit] = React.useState(false);
   const dispatch = useDispatch();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,8 +82,38 @@ function App() {
     const project = projects.find(
       (project) => project.id === selectedProjectId
     );
-    setSelectedProject(project);
+    if (project)
+      setContent({
+        title: project.name,
+        tasks: project.tasks,
+        createIsAllowed: true,
+      });
+    else setContent(null);
   }, [selectedProjectId, projects]);
+
+  const handleTodayClicked = () => {
+    const today = dayjs(new Date()).format("YYYY-MM-DD");
+    const allTaks = projects.flatMap((project) => project.tasks);
+    const toDayTaks = allTaks.filter((task) => task.startDate === today);
+
+    setContent({
+      title: "Today",
+      tasks: toDayTaks,
+      createIsAllowed: false,
+    });
+  };
+
+  const handleWeekClicked = () => {
+    const today = dayjs(new Date()).format("YYYY-MM-DD");
+    const allTaks = projects.flatMap((project) => project.tasks);
+    const weekTaks = allTaks.filter((task) => task.startDate !== today);
+
+    setContent({
+      title: "This week",
+      tasks: weekTaks,
+      createIsAllowed: false,
+    });
+  };
 
   const handleProjectClicked = (id: string) => {
     dispatch({
@@ -141,10 +178,11 @@ function App() {
     });
     setTaskInput("");
     ///handleProjectClicked(id);
-    //setSelectedProject(projects.find((project) => project.id === id));
+    //setContent(projects.find((project) => project.id === id));
   };
 
   const handleEditTask = (task: TaskProps) => {
+    setIsEdit(true);
     setTaskInputEdit(task);
     setForm(true);
   };
@@ -176,31 +214,26 @@ function App() {
       <Box sx={{ minHeight: "100vh" }} className={styles.wrapper}>
         <Box component="nav" className={styles.nav}>
           <List disablePadding>
-            <ListItem
-              disablePadding
-              onClick={() => handleProjectClicked(projectInboxId)}
-            >
-              <ListItemButton>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={() => handleProjectClicked(projectInboxId)}
+              >
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>
                 <ListItemText primary="Inbox" />
               </ListItemButton>
             </ListItem>
-          </List>
-          <List disablePadding>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => handleTodayClicked()}>
                 <ListItemIcon>
                   <TodayIcon />
                 </ListItemIcon>
                 <ListItemText primary="Today" />
               </ListItemButton>
             </ListItem>
-          </List>
-          <List disablePadding>
             <ListItem disablePadding>
-              <ListItemButton>
+              <ListItemButton onClick={() => handleWeekClicked()}>
                 <ListItemIcon>
                   <DateRangeIcon />
                 </ListItemIcon>
@@ -313,21 +346,23 @@ function App() {
         </Box>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
           <>
-            {selectedProject && (
+            {content && (
               <>
                 <Box className={styles.mainWrapper}>
                   <Typography variant="h4" sx={{ fontFamily: "inherit" }}>
-                    {selectedProject.name}
+                    {content.title}
                   </Typography>
                   <Box sx={{ display: "flex", gap: "6px" }}>
-                    <Button
-                      variant="contained"
-                      startIcon={<AddIcon />}
-                      onClick={handleIniteCreateTask}
-                      sx={{ background: "#18a0fb", textTransform: "none" }}
-                    >
-                      New task
-                    </Button>
+                    {content.createIsAllowed && (
+                      <Button
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        onClick={handleIniteCreateTask}
+                        sx={{ background: "#18a0fb", textTransform: "none" }}
+                      >
+                        New task
+                      </Button>
+                    )}
                     <FormTeste
                       openPop={form}
                       handleOnClosePopUp={handleOnClosePopUp}
@@ -336,7 +371,7 @@ function App() {
                   </Box>
                 </Box>
                 <Box className={styles.gridBox}>
-                  {selectedProject.tasks.map((task) => {
+                  {content.tasks.map((task) => {
                     return (
                       <Task
                         title={task.title}
