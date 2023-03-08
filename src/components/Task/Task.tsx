@@ -7,11 +7,15 @@ import MoreHorizIcon from "@material-ui/icons/MoreVert";
 import { pink } from "@mui/material/colors";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
+import FaceIcon from "@material-ui/icons/Face";
+import AlarmOnIcon from "@material-ui/icons/AlarmOn";
+
 import { useDispatch } from "react-redux";
 
 import {
   Box,
   CardContent,
+  Chip,
   Dialog,
   DialogContent,
   DialogContentText,
@@ -44,6 +48,7 @@ const Task: React.FC<TaskProps> = ({
   taskEdit,
 }) => {
   const [dialogOpen, setdialogOpen] = React.useState(false);
+
   const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -86,6 +91,8 @@ const Task: React.FC<TaskProps> = ({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "1rem",
+            paddingBottom: "4px",
+            gap: "10px",
           }}
         >
           <Typography
@@ -97,7 +104,7 @@ const Task: React.FC<TaskProps> = ({
               fontWeight: 600,
             }}
           >
-            {title} 🚧
+            {title}🚧
           </Typography>
           <IconButton aria-label="settings" onClick={handleClick}>
             <MoreHorizIcon />
@@ -116,8 +123,14 @@ const Task: React.FC<TaskProps> = ({
           </Menu>
         </Box>
         <CardContent>
-          <Typography>{startDate}</Typography>
+          <Typography sx={{ display: "flex", gap: "3px" }}>
+            <AlarmOnIcon fontSize="small" />
+            <Typography sx={{ color: "#8d8d99", fontSize: "14px" }}>
+              {startDate}
+            </Typography>
+          </Typography>
         </CardContent>
+
         <CardActions
           sx={{
             paddingRight: "16px",
@@ -146,10 +159,28 @@ const Task: React.FC<TaskProps> = ({
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle> 👉 Detalhes da tarefa</DialogTitle>
             <DialogContent>
-              <DialogContentText id="alert-dialog-description">
-                {description}
+              <DialogContentText
+                id="alert-dialog-description"
+                sx={{ marginBottom: "0.5rem" }}
+              >
+                Título: {title}
+              </DialogContentText>
+              <DialogContentText
+                id="alert-dialog-description"
+                sx={{ marginBottom: "0.5rem" }}
+              >
+                Descrição: {description}
+              </DialogContentText>
+              <DialogContentText
+                id="alert-dialog-description"
+                sx={{ marginBottom: "0.5rem" }}
+              >
+                <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                  <AlarmOnIcon fontSize="small" />
+                  <span>{startDate}</span>
+                </Box>
               </DialogContentText>
             </DialogContent>
           </Dialog>
