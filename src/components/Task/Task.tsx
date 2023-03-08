@@ -130,7 +130,7 @@ const Task: React.FC<TaskProps> = ({
             </Typography>
           </Typography>
         </CardContent>
-
+        <Divider light />
         <CardActions
           sx={{
             paddingRight: "16px",
