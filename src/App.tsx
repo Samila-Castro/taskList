@@ -316,7 +316,9 @@ function App() {
             {selectedProject && (
               <>
                 <Box className={styles.mainWrapper}>
-                  <Typography variant="h4">{selectedProject.name}</Typography>
+                  <Typography variant="h4" sx={{ fontFamily: "inherit" }}>
+                    {selectedProject.name}
+                  </Typography>
                   <Box sx={{ display: "flex", gap: "6px" }}>
                     <Button
                       variant="contained"
