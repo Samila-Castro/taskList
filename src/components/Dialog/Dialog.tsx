@@ -88,7 +88,7 @@ const FormTeste: React.FC<FormProps> = ({
             margin="dense"
             id="name"
             label="Título da task"
-            type="email"
+            type="text"
             value={taskInput.title}
             fullWidth
             variant="standard"
@@ -102,7 +102,7 @@ const FormTeste: React.FC<FormProps> = ({
             margin="dense"
             id="name"
             label="Descrição da task"
-            type="email"
+            type="text"
             fullWidth
             variant="standard"
             onChange={(event) =>
