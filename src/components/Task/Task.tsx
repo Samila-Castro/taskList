@@ -104,7 +104,7 @@ const Task: React.FC<TaskProps> = ({
               fontWeight: 600,
             }}
           >
-            {title}🚧
+            {title}
           </Typography>
           <IconButton aria-label="settings" onClick={handleClick}>
             <MoreHorizIcon />
