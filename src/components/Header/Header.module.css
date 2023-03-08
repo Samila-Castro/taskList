@@ -68,7 +68,16 @@
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (width: 992px) {
+  .buttons {
+    display: flex;
+  }
+  .header {
+    padding: 2rem 1rem;
+  }
+}
+
+@media only screen and (min-width: 992px) {
   .mobileMenu {
     display: none;
   }
