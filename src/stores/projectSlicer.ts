@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
 
 interface State {
@@ -15,7 +16,7 @@ interface TaskProps {
   id: string;
   title: string;
   description?: string;
-  startDate?: string;
+  startDate: string;
   //priority?: "Baixa" | "Normal" | "Alta";
 }
 const inboxProject = { id: uuidv4(), name: "Inbox", tasks: [] };
@@ -64,7 +65,7 @@ export const projectSlicer = createSlice({
       const newTask = {
         ...action.payload.taskInput,
         id: uuidv4(),
-        startDate: new Date().toDateString(),
+        startDate: dayjs(new Date()).format("YYYY-MM-DD"),
       };
       const newTaskArray = [...currectProject.tasks, newTask];
       copyProjects[projecteSelectedIndex].tasks = newTaskArray;
