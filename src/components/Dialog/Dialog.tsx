@@ -8,9 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../stores";
-import EmojiPicker from "emoji-picker-react";
-import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface TaskProps {
   id?: string;
