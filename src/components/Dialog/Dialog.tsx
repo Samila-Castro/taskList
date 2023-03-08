@@ -10,13 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../stores";
 import EmojiPicker from "emoji-picker-react";
 import EmojiEmotionsIcon from "@material-ui/icons/EmojiEmotions";
-import { IconButton } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 
 interface TaskProps {
   id?: string;
   title: string;
   description?: string;
-  startDate?: string;
+  startDate: string;
   priority?: "Baixa" | "Normal" | "Alta";
 }
 interface FormProps {
@@ -109,6 +109,23 @@ const FormTeste: React.FC<FormProps> = ({
               handleInputTask(event.currentTarget.value, "description")
             }
           />
+          {taskInput.id && (
+            <Box sx={{ marginTop: "1rem" }}>
+              <Typography>Data</Typography>
+              <TextField
+                value={taskInput.startDate}
+                autoFocus
+                margin="dense"
+                id="name"
+                type="date"
+                fullWidth
+                variant="standard"
+                onChange={(event) =>
+                  handleInputTask(event.currentTarget.value, "startDate")
+                }
+              />
+            </Box>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCreateNewTask}>Criar</Button>
