@@ -1,11 +1,16 @@
 import * as React from "react";
-import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  Button,
+  IconButton,
+  TextField,
+  Box,
+  List,
+  Typography,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import TodayIcon from "@material-ui/icons/Today";
 import DateRangeIcon from "@material-ui/icons/DateRange";
@@ -15,19 +20,21 @@ import AddIcon from "@material-ui/icons/Add";
 import ListIcon from "@material-ui/icons/List";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import { Button, IconButton, TextField } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { RootState } from "./stores";
 import { Header } from "./components/Header/Header";
+
 import styles from "./App.module.css";
+import "./global.css";
+
+import dayjs from "dayjs";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
-import "./global.css";
-import Task from "./components/Task/Task";
+
 import { Footer } from "./components/Footer/Footer";
 import FormTeste from "./components/Dialog/Dialog";
-import dayjs from "dayjs";
+import Task from "./components/Task/Task";
 
 interface TaskProps {
   id: string;
