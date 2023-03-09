@@ -22,7 +22,8 @@ import { useDispatch } from "react-redux";
 import { RootState } from "./stores";
 import { Header } from "./components/Header/Header";
 import styles from "./App.module.css";
-
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import "./global.css";
 import Task from "./components/Task/Task";
 import { Footer } from "./components/Footer/Footer";
@@ -55,6 +56,8 @@ interface Content {
 }
 
 function App() {
+  dayjs.extend(isSameOrAfter);
+  dayjs.extend(isSameOrBefore);
   //const startDate = new Date("2023-03-01").toDateString();
   const projects = useSelector((state: RootState) => state.projects.projects);
   const selectedProjectId = useSelector(
@@ -79,17 +82,15 @@ function App() {
   };
 
   React.useEffect(() => {
-    const project = projects.find(
-      (project) => project.id === selectedProjectId
-    );
+    console.log("useEffect");
+    const project = findProjectById(selectedProjectId);
     if (project)
       setContent({
         title: project.name,
         tasks: project.tasks,
         createIsAllowed: true,
       });
-    else setContent(null);
-  }, [selectedProjectId, projects]);
+  }, [projects]);
 
   const handleTodayClicked = () => {
     const today = dayjs(new Date()).format("YYYY-MM-DD");
@@ -104,9 +105,15 @@ function App() {
   };
 
   const handleWeekClicked = () => {
-    const today = dayjs(new Date()).format("YYYY-MM-DD");
+    const startOfWeek = dayjs(dayjs().startOf("w")).format("YYYY-MM-DD");
+    const endOfWeek = dayjs(dayjs().endOf("w")).format("YYYY-MM-DD");
+
     const allTaks = projects.flatMap((project) => project.tasks);
-    const weekTaks = allTaks.filter((task) => task.startDate !== today);
+    const weekTaks = allTaks.filter(
+      (task) =>
+        dayjs(task.startDate).isSameOrAfter(startOfWeek) &&
+        dayjs(task.startDate).isSameOrBefore(endOfWeek)
+    );
 
     setContent({
       title: "This week",
@@ -115,7 +122,19 @@ function App() {
     });
   };
 
+  const findProjectById = (id: string) => {
+    return projects.find((project) => project.id === id);
+  };
+
   const handleProjectClicked = (id: string) => {
+    const project = findProjectById(id);
+    console.log("handleProjectClicked", project);
+    if (project)
+      setContent({
+        title: project.name,
+        tasks: project.tasks,
+        createIsAllowed: true,
+      });
     dispatch({
       type: "projects/setSelectedProjectId",
       payload: id,
