@@ -82,7 +82,6 @@ function App() {
   };
 
   React.useEffect(() => {
-    console.log("useEffect");
     const project = findProjectById(selectedProjectId);
     if (project)
       setContent({
@@ -128,7 +127,6 @@ function App() {
 
   const handleProjectClicked = (id: string) => {
     const project = findProjectById(id);
-    console.log("handleProjectClicked", project);
     if (project)
       setContent({
         title: project.name,
