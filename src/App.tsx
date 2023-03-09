@@ -55,7 +55,7 @@ interface Content {
 function App() {
   dayjs.extend(isSameOrAfter);
   dayjs.extend(isSameOrBefore);
-  //const startDate = new Date("2023-03-01").toDateString();
+
   const projects = useSelector((state: RootState) => state.projects.projects);
   const selectedProjectId = useSelector(
     (state: RootState) => state.projects.selectedProjectId
