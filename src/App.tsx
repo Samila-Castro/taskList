@@ -170,6 +170,7 @@ function App() {
           type: "projects/createNewProject",
           payload: input.name,
         });
+        setInput({ id: "", name: "" });
       }
     }
 
