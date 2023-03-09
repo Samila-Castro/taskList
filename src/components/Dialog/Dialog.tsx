@@ -1,14 +1,18 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import {
+  Box,
+  Typography,
+  Button,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../stores";
-import { Box, Typography } from "@mui/material";
 
 interface TaskProps {
   id?: string;
@@ -28,6 +32,11 @@ const FormTeste: React.FC<FormProps> = ({
   handleOnClosePopUp,
   task,
 }) => {
+  const dispatch = useDispatch();
+  const selectedProjectId = useSelector(
+    (state: RootState) => state.projects.selectedProjectId
+  );
+
   const [taskInput, setTaskInput] = React.useState<TaskProps>({
     title: "",
     description: "",
@@ -44,11 +53,6 @@ const FormTeste: React.FC<FormProps> = ({
       });
     }
   }, [task]);
-
-  const dispatch = useDispatch();
-  const selectedProjectId = useSelector(
-    (state: RootState) => state.projects.selectedProjectId
-  );
 
   const handleInputTask = (value: string, key: string) => {
     setTaskInput({
