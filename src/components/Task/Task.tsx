@@ -49,7 +49,6 @@ const Task: React.FC<TaskProps> = ({
   const dispatch = useDispatch();
   const [dialogOpen, setdialogOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [openOption, setOpenOption] = React.useState(false);
 
   const open = Boolean(anchorEl);
 
