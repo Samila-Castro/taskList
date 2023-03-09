@@ -160,15 +160,6 @@ function App() {
     setRequireNewProject(false);
   };
 
-  const handleDeleteTask = (id: string) => {
-    dispatch({
-      type: "projects/deleteTask",
-      payload: {
-        id,
-      },
-    });
-  };
-
   const handleCreatNewProjectCancell = () => {
     setRequireNewProject(false);
   };
@@ -180,22 +171,6 @@ function App() {
         id,
       },
     });
-  };
-
-  const handleInputTask = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTaskInput(event.currentTarget.value);
-  };
-  const handleCreateNewTask = () => {
-    dispatch({
-      type: "projects/createNewTask",
-      payload: {
-        id: selectedProjectId,
-        taskInput,
-      },
-    });
-    setTaskInput("");
-    ///handleProjectClicked(id);
-    //setContent(projects.find((project) => project.id === id));
   };
 
   const handleEditTask = (task: TaskProps) => {
@@ -219,9 +194,6 @@ function App() {
     setRequireNewProject(true);
   };
 
-  const handleOpenPopUp = () => {
-    setForm(true);
-  };
   const handleOnClosePopUp = () => {
     setForm(false);
   };
