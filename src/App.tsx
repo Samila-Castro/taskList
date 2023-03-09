@@ -10,6 +10,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Alert,
+  Snackbar,
+  AlertTitle,
 } from "@mui/material";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import TodayIcon from "@material-ui/icons/Today";
@@ -79,6 +82,8 @@ function App() {
   const [form, setForm] = React.useState(false);
   const [taskInputEdit, setTaskInputEdit] = React.useState<TaskProps>();
   const [isEdit, setIsEdit] = React.useState(false);
+  const [showError, setShowError] = React.useState("");
+  const [open, setOpen] = React.useState(false);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ id: input.id, name: event.currentTarget.value });
@@ -153,10 +158,19 @@ function App() {
         payload: input,
       });
     } else {
-      dispatch({
-        type: "projects/createNewProject",
-        payload: input.name,
-      });
+      const alreadyExist = projects.some(
+        (project) => project.name === input.name
+      );
+      if (alreadyExist) {
+        setShowError("Já existe");
+      } else if (input.name === "") {
+        setShowError("Forneca um nome");
+      } else {
+        dispatch({
+          type: "projects/createNewProject",
+          payload: input.name,
+        });
+      }
     }
 
     setInput({ id: "", name: "" });
@@ -333,6 +347,27 @@ function App() {
                   </Button>
                 </Box>
               </Box>
+            )}
+            {showError && (
+              <Alert
+                severity="warning"
+                action={
+                  <IconButton
+                    aria-label="close"
+                    color="inherit"
+                    size="small"
+                    onClick={() => {
+                      setShowError("");
+                    }}
+                  >
+                    <CloseIcon fontSize="inherit" />
+                  </IconButton>
+                }
+                sx={{ mb: 2 }}
+                color="warning"
+              >
+                {showError}
+              </Alert>
             )}
           </Box>
         </Box>
