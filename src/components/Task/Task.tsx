@@ -2,14 +2,15 @@ import React from "react";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import IconButton from "@mui/material/IconButton";
-import { blue, deepPurple } from "@mui/material/colors";
 import MoreHorizIcon from "@material-ui/icons/MoreVert";
-import { pink } from "@mui/material/colors";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
 import AlarmOnIcon from "@material-ui/icons/AlarmOn";
+import FullscreenIcon from "@material-ui/icons/Fullscreen";
 
 import { useDispatch } from "react-redux";
+import { blue, deepPurple } from "@mui/material/colors";
+import { pink } from "@mui/material/colors";
 
 import {
   Box,
@@ -24,7 +25,6 @@ import {
   MenuItem,
   Typography,
 } from "@mui/material";
-import FullscreenIcon from "@material-ui/icons/Fullscreen";
 
 interface TaskProps {
   id: string;
@@ -46,20 +46,19 @@ const Task: React.FC<TaskProps> = ({
   startDate,
   taskEdit,
 }) => {
-  const [dialogOpen, setdialogOpen] = React.useState(false);
-
   const dispatch = useDispatch();
-
+  const [dialogOpen, setdialogOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [openOption, setOpenOption] = React.useState(false);
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose2 = () => {
     setAnchorEl(null);
   };
-
-  const [openOption, setOpenOption] = React.useState(false);
 
   const handleClickOpenOption = () => {
     setOpenOption(true);
