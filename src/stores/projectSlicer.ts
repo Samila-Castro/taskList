@@ -50,7 +50,7 @@ export const projectSlicer = createSlice({
 
     deleteProject: (state, action) => {
       const copyProjects = [...state.projects];
-      console.log({ action });
+
       state.projects = copyProjects.filter(
         (project) => project.id !== action.payload.id
       );
@@ -69,7 +69,6 @@ export const projectSlicer = createSlice({
       };
       const newTaskArray = [...currectProject.tasks, newTask];
       copyProjects[projecteSelectedIndex].tasks = newTaskArray;
-      console.log(newTask);
     },
 
     editTask: (state, action) => {
@@ -85,7 +84,6 @@ export const projectSlicer = createSlice({
         action.payload;
     },
     deleteTask: (state, action) => {
-      console.log({ action });
       const projecteSelectedIndex = state.projects.findIndex(
         (project) => project.id === state.selectedProjectId
       );
