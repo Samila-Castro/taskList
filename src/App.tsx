@@ -164,7 +164,7 @@ function App() {
       if (alreadyExist) {
         setShowError("Já existe");
       } else if (input.name === "") {
-        setShowError("Forneca um nome");
+        setShowError("Forneça um nome");
       } else {
         dispatch({
           type: "projects/createNewProject",
