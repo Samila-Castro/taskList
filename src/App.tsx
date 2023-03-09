@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -27,8 +26,6 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import "./global.css";
 import Task from "./components/Task/Task";
 import { Footer } from "./components/Footer/Footer";
-import Dialog from "./components/Dialog/Dialog";
-import Form from "./components/Dialog/Dialog";
 import FormTeste from "./components/Dialog/Dialog";
 import dayjs from "dayjs";
 

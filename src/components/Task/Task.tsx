@@ -7,7 +7,6 @@ import MoreHorizIcon from "@material-ui/icons/MoreVert";
 import { pink } from "@mui/material/colors";
 import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
-import FaceIcon from "@material-ui/icons/Face";
 import AlarmOnIcon from "@material-ui/icons/AlarmOn";
 
 import { useDispatch } from "react-redux";
