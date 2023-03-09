@@ -56,12 +56,9 @@ const Task: React.FC<TaskProps> = ({
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose2 = () => {
     setAnchorEl(null);
-  };
-
-  const handleClickOpenOption = () => {
-    setOpenOption(true);
   };
 
   const handleDeleteTask = () => {
