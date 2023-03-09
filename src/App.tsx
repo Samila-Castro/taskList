@@ -74,7 +74,6 @@ function App() {
     id: "",
     name: "",
   });
-  const [taskInput, setTaskInput] = React.useState("");
   const [requireNewProject, setRequireNewProject] = React.useState(false);
   const [form, setForm] = React.useState(false);
   const [taskInputEdit, setTaskInputEdit] = React.useState<TaskProps>();
