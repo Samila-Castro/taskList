@@ -63,6 +63,7 @@ function App() {
   dayjs.extend(isSameOrAfter);
   dayjs.extend(isSameOrBefore);
 
+  const dispatch = useDispatch();
   const projects = useSelector((state: RootState) => state.projects.projects);
   const selectedProjectId = useSelector(
     (state: RootState) => state.projects.selectedProjectId
@@ -78,7 +79,6 @@ function App() {
   const [form, setForm] = React.useState(false);
   const [taskInputEdit, setTaskInputEdit] = React.useState<TaskProps>();
   const [isEdit, setIsEdit] = React.useState(false);
-  const dispatch = useDispatch();
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ id: input.id, name: event.currentTarget.value });
