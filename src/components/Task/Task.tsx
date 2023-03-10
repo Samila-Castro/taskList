@@ -7,6 +7,7 @@ import AvatarGroup from "@mui/material/AvatarGroup";
 import Avatar from "@mui/material/Avatar";
 import AlarmOnIcon from "@material-ui/icons/AlarmOn";
 import FullscreenIcon from "@material-ui/icons/Fullscreen";
+import ScheduleOutlinedIcon from "@material-ui/icons/ScheduleOutlined";
 
 import { useDispatch } from "react-redux";
 import { blue, deepPurple } from "@mui/material/colors";
@@ -32,7 +33,7 @@ interface TaskProps {
   description?: string;
   completed?: boolean;
   startDate: string;
-  dueDate?: Date;
+  dueDate: string;
   priority?: "Baixa" | "Normal" | "Alta";
   state?: "Novo" | "Em Andamento" | "Pronto";
   tags?: string[];
@@ -45,6 +46,7 @@ const Task: React.FC<TaskProps> = ({
   description,
   startDate,
   taskEdit,
+  dueDate,
 }) => {
   const dispatch = useDispatch();
   const [dialogOpen, setdialogOpen] = React.useState(false);
@@ -116,11 +118,22 @@ const Task: React.FC<TaskProps> = ({
             <MenuItem onClick={handleDeleteTask}>Deletar</MenuItem>
           </Menu>
         </Box>
-        <CardContent>
-          <Typography sx={{ display: "flex", gap: "3px" }}>
-            <AlarmOnIcon fontSize="small" />
-            <Typography sx={{ color: "#8d8d99", fontSize: "14px" }}>
+        <CardContent sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography sx={{ display: "flex", alignItems: "center" }}>
+            <ScheduleOutlinedIcon fontSize="small" color="primary" />
+            <Typography
+              sx={{
+                color: "#8d8d99",
+                fontSize: "12px",
+              }}
+            >
               {startDate}
+            </Typography>
+          </Typography>
+          <Typography sx={{ display: "flex", alignItems: "center" }}>
+            <AlarmOnIcon fontSize="small" color="error" />
+            <Typography sx={{ color: "#8d8d99", fontSize: "12px" }}>
+              {dueDate}
             </Typography>
           </Typography>
         </CardContent>
@@ -171,9 +184,25 @@ const Task: React.FC<TaskProps> = ({
                 id="alert-dialog-description"
                 sx={{ marginBottom: "0.5rem" }}
               >
-                <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  <AlarmOnIcon fontSize="small" />
-                  <span>{startDate}</span>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    gap: "8px",
+                  }}
+                >
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "4px" }}
+                  >
+                    <ScheduleOutlinedIcon fontSize="small" color="primary" />
+                    <span>{startDate}</span>
+                  </Box>
+                  <Box
+                    sx={{ display: "flex", alignItems: "center", gap: "4px" }}
+                  >
+                    <AlarmOnIcon fontSize="small" color="error" />
+                    <span>{dueDate}</span>
+                  </Box>
                 </Box>
               </DialogContentText>
             </DialogContent>
