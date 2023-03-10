@@ -97,8 +97,19 @@ function App() {
         tasks: project.tasks,
         createIsAllowed: true,
       });
+    else handleInboxTodayClicked();
   }, [projects]);
 
+  const handleInboxTodayClicked = () => {
+    const allTaks = projects.flatMap((project) => project.tasks);
+    const tasksOrdered = sortTaks(allTaks);
+
+    setContent({
+      title: "Inbox",
+      tasks: tasksOrdered,
+      createIsAllowed: false,
+    });
+  };
   const handleTodayClicked = () => {
     const today = dayjs(new Date()).format("YYYY-MM-DD");
     const allTaks = projects.flatMap((project) => project.tasks);
@@ -122,15 +133,19 @@ function App() {
         dayjs(task.startDate).isSameOrBefore(endOfWeek)
     );
 
-    const taskWeekOrdered = weekTaks.sort((a, b) => {
-      if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
-      return -1;
-    });
+    const taskWeekOrdered = sortTaks(weekTaks);
 
     setContent({
       title: "This week",
       tasks: taskWeekOrdered,
       createIsAllowed: false,
+    });
+  };
+
+  const sortTaks = (tasks: TaskProps[]) => {
+    return tasks.sort((a, b) => {
+      if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
+      return -1;
     });
   };
 
@@ -228,9 +243,7 @@ function App() {
         <Box component="nav" className={styles.nav}>
           <List disablePadding>
             <ListItem disablePadding>
-              <ListItemButton
-                onClick={() => handleProjectClicked(projectInboxId)}
-              >
+              <ListItemButton onClick={() => handleInboxTodayClicked()}>
                 <ListItemIcon>
                   <InboxIcon />
                 </ListItemIcon>

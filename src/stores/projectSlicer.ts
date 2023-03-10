@@ -24,7 +24,7 @@ interface TaskProps {
 const inboxProject = { id: uuidv4(), name: "Inbox", tasks: [] };
 const initialState: State = {
   projects: [inboxProject],
-  selectedProjectId: inboxProject.id,
+  selectedProjectId: "",
 };
 
 dayjs.extend(localizedFormat);
