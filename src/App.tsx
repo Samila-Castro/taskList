@@ -45,7 +45,7 @@ interface TaskProps {
   description?: string;
   //completed?: boolean;
   startDate: string;
-  //dueDate?: Date;
+  dueDate: string;
   priority?: "Baixa" | "Normal" | "Alta";
   //state?: "Novo" | "Em Andamento" | "Pronto";
   //tags?: string[];
@@ -208,6 +208,7 @@ function App() {
       title: "",
       description: "",
       startDate: "",
+      dueDate: "",
     });
     setForm(true);
   };
@@ -413,6 +414,7 @@ function App() {
                         id={task.id}
                         taskEdit={() => handleEditTask(task)}
                         startDate={task.startDate}
+                        dueDate={task.dueDate}
                       />
                     );
                   })}
