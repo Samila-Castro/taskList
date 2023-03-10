@@ -19,6 +19,7 @@ interface TaskProps {
   title: string;
   description?: string;
   startDate: string;
+  dueDate: string;
   priority?: "Baixa" | "Normal" | "Alta";
 }
 interface FormProps {
@@ -41,6 +42,7 @@ const FormTeste: React.FC<FormProps> = ({
     title: "",
     description: "",
     startDate: "",
+    dueDate: "",
   });
 
   React.useEffect(() => {
@@ -50,6 +52,7 @@ const FormTeste: React.FC<FormProps> = ({
         title: "",
         description: "",
         startDate: "",
+        dueDate: "",
       });
     }
   }, [task]);
@@ -124,6 +127,19 @@ const FormTeste: React.FC<FormProps> = ({
                 variant="standard"
                 onChange={(event) =>
                   handleInputTask(event.currentTarget.value, "startDate")
+                }
+              />
+              <Typography>Data de término</Typography>
+              <TextField
+                value={taskInput.dueDate}
+                autoFocus
+                margin="dense"
+                id="name"
+                type="date"
+                fullWidth
+                variant="standard"
+                onChange={(event) =>
+                  handleInputTask(event.currentTarget.value, "dueDate")
                 }
               />
             </Box>
