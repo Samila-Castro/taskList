@@ -122,9 +122,14 @@ function App() {
         dayjs(task.startDate).isSameOrBefore(endOfWeek)
     );
 
+    const taskWeekOrdered = weekTaks.sort((a, b) => {
+      if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
+      return -1;
+    });
+
     setContent({
       title: "This week",
-      tasks: weekTaks,
+      tasks: taskWeekOrdered,
       createIsAllowed: false,
     });
   };
