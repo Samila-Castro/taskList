@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import { v4 as uuidv4 } from "uuid";
 
 interface State {
@@ -17,6 +18,7 @@ interface TaskProps {
   title: string;
   description?: string;
   startDate: string;
+  dueDate: string;
   //priority?: "Baixa" | "Normal" | "Alta";
 }
 const inboxProject = { id: uuidv4(), name: "Inbox", tasks: [] };
@@ -24,6 +26,9 @@ const initialState: State = {
   projects: [inboxProject],
   selectedProjectId: inboxProject.id,
 };
+
+dayjs.extend(localizedFormat);
+dayjs().format("L ll");
 
 export const projectSlicer = createSlice({
   name: "projects",
@@ -66,6 +71,7 @@ export const projectSlicer = createSlice({
         ...action.payload.taskInput,
         id: uuidv4(),
         startDate: dayjs(new Date()).format("YYYY-MM-DD"),
+        dueDate: dayjs(new Date()).format("YYYY-MM-DD"),
       };
       const newTaskArray = [...currectProject.tasks, newTask];
       copyProjects[projecteSelectedIndex].tasks = newTaskArray;
