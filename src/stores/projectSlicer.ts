@@ -24,7 +24,7 @@ interface TaskProps {
 const inboxProject = { id: uuidv4(), name: "Inbox", tasks: [] };
 const initialState: State = {
   projects: [inboxProject],
-  selectedProjectId: "",
+  selectedProjectId: inboxProject.id,
 };
 
 dayjs.extend(localizedFormat);
@@ -74,7 +74,10 @@ export const projectSlicer = createSlice({
         dueDate: dayjs(new Date()).format("YYYY-MM-DD"),
       };
       const newTaskArray = [...currectProject.tasks, newTask];
-      copyProjects[projecteSelectedIndex].tasks = newTaskArray;
+      copyProjects[projecteSelectedIndex].tasks = newTaskArray.sort((a, b) => {
+        if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
+        return -1;
+      });
     },
 
     editTask: (state, action) => {
@@ -88,6 +91,13 @@ export const projectSlicer = createSlice({
       ].tasks.findIndex((task) => task.id === action.payload.id);
       state.projects[projecteSelectedIndex].tasks[taskSelectedIndex] =
         action.payload;
+
+      state.projects[projecteSelectedIndex].tasks = state.projects[
+        projecteSelectedIndex
+      ].tasks.sort((a, b) => {
+        if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
+        return -1;
+      });
     },
     deleteTask: (state, action) => {
       const projecteSelectedIndex = state.projects.findIndex(
