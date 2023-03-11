@@ -83,24 +83,42 @@ function App() {
   const [taskInputEdit, setTaskInputEdit] = React.useState<TaskProps>();
   const [isEdit, setIsEdit] = React.useState(false);
   const [showError, setShowError] = React.useState("");
-  const [open, setOpen] = React.useState(false);
+  const [currentView, setcurrentView] = React.useState("");
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInput({ id: input.id, name: event.currentTarget.value });
   };
 
+  const sortTaks = (tasks: TaskProps[]) => {
+    return tasks.sort((a, b) => {
+      if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
+      return -1;
+    });
+  };
   React.useEffect(() => {
     const project = findProjectById(selectedProjectId);
-    if (project)
-      setContent({
-        title: project.name,
-        tasks: project.tasks,
-        createIsAllowed: true,
-      });
-    else handleInboxTodayClicked();
+    const isInbox = selectedProjectId === projects[0].id;
+    if (isInbox) {
+      if (currentView === "Today") {
+        handleTodayClicked();
+      } else if (currentView === "This week") {
+        handleWeekClicked();
+      } else {
+        handleInboxTodayClicked();
+      }
+    } else if (project) {
+      handleSetContentProject(selectedProjectId);
+    }
   }, [projects]);
 
   const handleInboxTodayClicked = () => {
+    setcurrentView("Inbox");
+
+    dispatch({
+      type: "projects/setSelectedProjectId",
+      payload: projects[0].id,
+    });
+
     const allTaks = projects.flatMap((project) => project.tasks);
     const tasksOrdered = sortTaks(allTaks);
 
@@ -111,6 +129,11 @@ function App() {
     });
   };
   const handleTodayClicked = () => {
+    setcurrentView("Today");
+    dispatch({
+      type: "projects/setSelectedProjectId",
+      payload: projects[0].id,
+    });
     const today = dayjs(new Date()).format("YYYY-MM-DD");
     const allTaks = projects.flatMap((project) => project.tasks);
     const toDayTaks = allTaks.filter((task) => task.startDate === today);
@@ -123,6 +146,11 @@ function App() {
   };
 
   const handleWeekClicked = () => {
+    setcurrentView("This week");
+    dispatch({
+      type: "projects/setSelectedProjectId",
+      payload: projects[0].id,
+    });
     const startOfWeek = dayjs(dayjs().startOf("w")).format("YYYY-MM-DD");
     const endOfWeek = dayjs(dayjs().endOf("w")).format("YYYY-MM-DD");
 
@@ -142,29 +170,28 @@ function App() {
     });
   };
 
-  const sortTaks = (tasks: TaskProps[]) => {
-    return tasks.sort((a, b) => {
-      if (dayjs(a.startDate).isAfter(dayjs(b.startDate))) return 1;
-      return -1;
-    });
-  };
-
   const findProjectById = (id: string) => {
     return projects.find((project) => project.id === id);
   };
 
   const handleProjectClicked = (id: string) => {
+    handleSetContentProject(id);
+
+    dispatch({
+      type: "projects/setSelectedProjectId",
+      payload: id,
+    });
+  };
+
+  const handleSetContentProject = (id: string) => {
     const project = findProjectById(id);
-    if (project)
+    if (project) {
       setContent({
         title: project.name,
         tasks: project.tasks,
         createIsAllowed: true,
       });
-    dispatch({
-      type: "projects/setSelectedProjectId",
-      payload: id,
-    });
+    }
   };
 
   const handleButtonClickCreateNewProject = () => {
@@ -199,6 +226,10 @@ function App() {
   };
 
   const handleCreatNewProjectCancell = () => {
+    setInput({
+      id: "",
+      name: "",
+    });
     setRequireNewProject(false);
   };
 
@@ -400,7 +431,7 @@ function App() {
                     {content.title}
                   </Typography>
                   <Box sx={{ display: "flex", gap: "6px" }}>
-                    {content.createIsAllowed && (
+                    {
                       <Button
                         variant="contained"
                         startIcon={<AddIcon />}
@@ -409,7 +440,7 @@ function App() {
                       >
                         New task
                       </Button>
-                    )}
+                    }
                     <FormTeste
                       openPop={form}
                       handleOnClosePopUp={handleOnClosePopUp}
